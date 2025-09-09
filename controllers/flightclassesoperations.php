@@ -1,28 +1,24 @@
 <?php
-require_once '../models/flightclasses.php';
+require_once 'flightclasses.php';
 
-$fc = new flightclasses();
+$flightclasses = new flightclasses();
 
-if(isset($_POST['saveflightclasses'])){
-    $flightclassid = $_POST['flightclassid'];
-    $flightid = $_POST['flightid'];
-    $bookingclassid = $_POST['bookingclassid'];
-    $noofseats = $_POST['noofseats'];
-    $unitprice = $_POST['unitprice'];
-    $currency = $_POST['currency'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $classid   = $_POST['classid'] ?? 0;
+    $classname = $_POST['classname'] ?? '';
 
-    $response = $fc->saveflightclasses($flightclassid, $flightid, $bookingclassid, $noofseats, $unitprice, $currency);
-    echo json_encode($response);
+    echo json_encode($flightclasses->saveflightclass($classid, $classname));
 }
 
-if(isset($_GET['getflightclasses'])){
-    $response = $fc->getflightclasses();
-    echo $response;
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    echo $flightclasses->getflightclass();
 }
 
-if(isset($_POST['deleteflightclasses'])){
-    $flightclassid = $_POST['flightclassid'];
-    $response = $fc->deleteflightclasses($flightclassid);
-    echo json_encode($response);
+if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+    parse_str(file_get_contents("php://input"), $_DELETE);
+    $classid = $_DELETE['classid'] ?? 0;
+
+    echo json_encode($flightclasses->deleteflightclass($classid));
 }
 ?>
+f

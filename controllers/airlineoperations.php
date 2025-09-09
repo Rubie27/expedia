@@ -1,25 +1,23 @@
 <?php
-require_once '../models/airline.php';
+require_once 'airline.php';
 
 $airline = new airline();
 
-if(isset($_POST['saveairline'])){
-    $airlineid = $_POST['airlineid'];
-    $airlinename = $_POST['airlinename'];
-    $cityid = $_POST['cityid'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $airlineid = $_POST['airlineid'] ?? 0;
+    $airlinename = $_POST['airlinename'] ?? '';
 
-    $response = $airline->saveairline($airlineid, $airlinename, $cityid);
-    echo json_encode($response);
+    echo json_encode($airline->saveairline($airlineid, $airlinename));
 }
 
-if(isset($_GET['getairline'])){
-    $response = $airline->getairline();
-    echo $response;
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    echo $airline->getairline();
 }
 
-if(isset($_POST['deleteairline'])){
-    $airlineid = $_POST['airlineid'];
-    $response = $airline->deleteairline($airlineid);
-    echo json_encode($response);
+if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+    parse_str(file_get_contents("php://input"), $_DELETE);
+    $airlineid = $_DELETE['airlineid'] ?? 0;
+
+    echo json_encode($airline->deleteairline($airlineid));
 }
 ?>

@@ -1,23 +1,23 @@
 <?php
-require_once 'db.php';
+require_once 'paymentmethod.php';
 
-class paymentmethod extends db {
+$paymentmethod = new paymentmethod();
 
-    function savepaymentmethod($methodid, $methodname){
-        $sql = "CALL sp_savepaymentmethod({$methodid}, '{$methodname}')";
-        $this->getData($sql);
-        return ["status" => "success", "message" => "Payment method saved successfully."];
-    }
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $paymentmethodid   = $_POST['paymentmethodid'] ?? 0;
+    $paymentmethodname = $_POST['paymentmethodname'] ?? '';
 
-    function getpaymentmethod(){
-        $sql = "CALL sp_getpaymentmethod()";
-        return $this->getJSON($sql);
-    }
+    echo json_encode($paymentmethod->savepaymentmethod($paymentmethodid, $paymentmethodname));
+}
 
-    function deletepaymentmethod($methodid){
-        $sql = "CALL sp_deletepaymentmethod({$methodid})";
-        $this->getData($sql);
-        return ["status" => "success", "message" => "Payment method deleted successfully."];
-    }
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    echo $paymentmethod->getpaymentmethod();
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+    parse_str(file_get_contents("php://input"), $_DELETE);
+    $paymentmethodid = $_DELETE['paymentmethodid'] ?? 0;
+
+    echo json_encode($paymentmethod->deletepaymentmethod($paymentmethodid));
 }
 ?>

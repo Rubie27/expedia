@@ -1,25 +1,24 @@
 <?php
-require_once '../models/airport.php';
+require_once 'airport.php';
 
 $airport = new airport();
 
-if(isset($_POST['saveairport'])){
-    $airportid = $_POST['airportid'];
-    $airportname = $_POST['airportname'];
-    $cityid = $_POST['cityid'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $airportid = $_POST['airportid'] ?? 0;
+    $airportname = $_POST['airportname'] ?? '';
+    $cityid = $_POST['cityid'] ?? 0;
 
-    $response = $airport->saveairport($airportid, $airportname, $cityid);
-    echo json_encode($response);
+    echo json_encode($airport->saveairport($airportid, $airportname, $cityid));
 }
 
-if(isset($_GET['getairport'])){
-    $response = $airport->getairport();
-    echo $response;
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    echo $airport->getairport();
 }
 
-if(isset($_POST['deleteairport'])){
-    $airportid = $_POST['airportid'];
-    $response = $airport->deleteairport($airportid);
-    echo json_encode($response);
+if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+    parse_str(file_get_contents("php://input"), $_DELETE);
+    $airportid = $_DELETE['airportid'] ?? 0;
+
+    echo json_encode($airport->deleteairport($airportid));
 }
 ?>

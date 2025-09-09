@@ -1,27 +1,23 @@
 <?php
-   require_once('../models/country.php');
+require_once 'country.php';
 
-   $country = new country();
+$country = new country();
 
-   if(isset($_POST['savecountry'] )){
-    $countryid = $_POST['countryid'];
-    $countryname = $_POST['countryname'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $countryid   = $_POST['countryid'] ?? 0;
+    $countryname = $_POST['countryname'] ?? '';
 
-    $response=$country->savecountry($countryid, $countryname);
-    echo json_encode($response);
-   }
+    echo json_encode($country->savecountry($countryid, $countryname));
+}
 
-   if(isset($_GET['getcountry'])){
-    $response = $country->getcountry();
-    echo $response;
-   }
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    echo $country->getcountry();
+}
 
-    
+if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+    parse_str(file_get_contents("php://input"), $_DELETE);
+    $countryid = $_DELETE['countryid'] ?? 0;
 
-   if(isset($_POST['deletecountry'])){
-    $countryid=$_POST['countryid'];
-    $response = $country->deletecountry($countryid);
-    echo json_encode($response);
-   }
-   
+    echo json_encode($country->deletecountry($countryid));
+}
 ?>

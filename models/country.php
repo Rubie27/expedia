@@ -1,39 +1,23 @@
 <?php
-require_once 'db.php';
+require_once 'country.php';
 
-class country extends db{
-    function checkcountry($countryid, $countryname){       
-         $sql="CALL `sp_checkcountry`({$countryid},'{$countryname}')";
-         return $this->getData($sql)->rowCount();
-    }
-    function savecountry($countryid, $countryname){
-        if($this->checkcountry($countryid, $countryname) > 0){
-            return [
-                'status' => 'error',
-                'message' => 'Country already exists.'
-            ];
-        }
-        $sql="CALL `sp_savecountry`({$countryid},'{$countryname}')";
-        $this->getData($sql);
-        return [
-            'status' => 'success',
-            'message' => 'Country saved successfully.'
-        ];
-    }
-    function getcountry(){
-        $sql="CALL `sp_getcountry`()";
-        return $this->getJSON($sql);
+$country = new country();
 
-    }
-    
-    function deletecountry($countryid){
-        $sql="CALL `sp_deletecountry`({$countryid})";
-        $this->getData($sql);
-        return [
-            'status' => 'success',
-            'message' => 'Country is deleted successfully.'
-        ];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $countryid   = $_POST['countryid'] ?? 0;
+    $countryname = $_POST['countryname'] ?? '';
 
-    }
+    echo json_encode($country->savecountry($countryid, $countryname));
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    echo $country->getcountry();
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+    parse_str(file_get_contents("php://input"), $_DELETE);
+    $countryid = $_DELETE['countryid'] ?? 0;
+
+    echo json_encode($country->deletecountry($countryid));
 }
 ?>

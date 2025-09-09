@@ -1,25 +1,23 @@
 <?php
-require_once '../models/currency.php';
+require_once 'currency.php';
 
 $currency = new currency();
 
-if(isset($_POST['savecurrency'])){
-    $currencyid = $_POST['currencyid'];
-    $currencyname = $_POST['currencyname'];
-    $symbol = $_POST['symbol'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $currencyid   = $_POST['currencyid'] ?? 0;
+    $currencyname = $_POST['currencyname'] ?? '';
 
-    $response = $currency->savecurrency($currencyid, $currencyname, $symbol);
-    echo json_encode($response);
+    echo json_encode($currency->savecurrency($currencyid, $currencyname));
 }
 
-if(isset($_GET['getcurrency'])){
-    $response = $currency->getcurrency();
-    echo $response;
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    echo $currency->getcurrency();
 }
 
-if(isset($_POST['deletecurrency'])){
-    $currencyid = $_POST['currencyid'];
-    $response = $currency->deletecurrency($currencyid);
-    echo json_encode($response);
+if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+    parse_str(file_get_contents("php://input"), $_DELETE);
+    $currencyid = $_DELETE['currencyid'] ?? 0;
+
+    echo json_encode($currency->deletecurrency($currencyid));
 }
 ?>

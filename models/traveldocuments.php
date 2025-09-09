@@ -1,23 +1,23 @@
 <?php
-require_once 'db.php';
+require_once 'traveldoc.php';
 
-class traveldocuments extends db {
+$traveldoc = new traveldoc();
 
-    function savetraveldocument($documentid, $documentname, $documentexpires){
-        $sql = "CALL sp_savetraveldocument({$documentid}, '{$documentname}', '{$documentexpires}')";
-        $this->getData($sql);
-        return ["status" => "success", "message" => "Travel document saved successfully."];
-    }
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $traveldocid   = $_POST['traveldocid'] ?? 0;
+    $docname       = $_POST['docname'] ?? '';
 
-    function gettraveldocument(){
-        $sql = "CALL sp_gettraveldocument()";
-        return $this->getJSON($sql);
-    }
+    echo json_encode($traveldoc->savetraveldoc($traveldocid, $docname));
+}
 
-    function deletetraveldocument($documentid){
-        $sql = "CALL sp_deletetraveldocument({$documentid})";
-        $this->getData($sql);
-        return ["status" => "success", "message" => "Travel document deleted successfully."];
-    }
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    echo $traveldoc->gettraveldoc();
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+    parse_str(file_get_contents("php://input"), $_DELETE);
+    $traveldocid = $_DELETE['traveldocid'] ?? 0;
+
+    echo json_encode($traveldoc->deletetraveldoc($traveldocid));
 }
 ?>

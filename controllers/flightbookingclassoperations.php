@@ -1,27 +1,24 @@
 <?php
-require_once '../models/flightbookingclass.php';
+require_once 'flightbookingclass.php';
 
-$fbc = new flightbookingclass();
+$flightbookingclass = new flightbookingclass();
 
-if(isset($_POST['saveflightbookingclass'])){
-    $fbclassid = $_POST['fbclassid'];
-    $classid = $_POST['classid'];
-    $noofseats = $_POST['noofseats'];
-    $unitprice = $_POST['unitprice'];
-    $currencyid = $_POST['currencyid'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $fbcid    = $_POST['fbcid'] ?? 0;
+    $classid  = $_POST['classid'] ?? 0;
+    $bookingid= $_POST['bookingid'] ?? 0;
 
-    $response = $fbc->saveflightbookingclass($fbclassid, $classid, $noofseats, $unitprice, $currencyid);
-    echo json_encode($response);
+    echo json_encode($flightbookingclass->saveflightbookingclass($fbcid, $classid, $bookingid));
 }
 
-if(isset($_GET['getflightbookingclass'])){
-    $response = $fbc->getflightbookingclass();
-    echo $response;
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    echo $flightbookingclass->getflightbookingclass();
 }
 
-if(isset($_POST['deleteflightbookingclass'])){
-    $fbclassid = $_POST['fbclassid'];
-    $response = $fbc->deleteflightbookingclass($fbclassid);
-    echo json_encode($response);
+if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+    parse_str(file_get_contents("php://input"), $_DELETE);
+    $fbcid = $_DELETE['fbcid'] ?? 0;
+
+    echo json_encode($flightbookingclass->deleteflightbookingclass($fbcid));
 }
 ?>

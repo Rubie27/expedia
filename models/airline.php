@@ -1,12 +1,15 @@
+
 <?php
 require_once 'db.php';
 
 class airline extends db {
-
-    function saveairline($airlineid, $airlinename, $cityid){
-        $sql = "CALL sp_saveairline({$airlineid}, '{$airlinename}', {$cityid})";
+    function saveairline($airlineid, $airlinename){
+        $sql = "CALL sp_saveairline({$airlineid}, '{$airlinename}')";
         $this->getData($sql);
-        return ["status" => "success", "message" => "Airline saved successfully."];
+        return [
+            'status' => 'success',
+            'message' => 'Airline saved successfully.'
+        ];
     }
 
     function getairline(){
@@ -17,7 +20,10 @@ class airline extends db {
     function deleteairline($airlineid){
         $sql = "CALL sp_deleteairline({$airlineid})";
         $this->getData($sql);
-        return ["status" => "success", "message" => "Airline deleted successfully."];
+        return [
+            'status' => 'success',
+            'message' => 'Airline deleted successfully.'
+        ];
     }
 }
 ?>

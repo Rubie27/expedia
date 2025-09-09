@@ -2,11 +2,13 @@
 require_once 'db.php';
 
 class flightclasses extends db {
-
-    function saveflightclasses($flightclassid, $flightid, $bookingclassid, $noofseats, $unitprice, $currency){
-        $sql = "CALL sp_saveflightclasses({$flightclassid}, {$flightid}, {$bookingclassid}, {$noofseats}, {$unitprice}, '{$currency}')";
+    function saveflightclass($classid, $classname){
+        $sql = "CALL sp_saveflightclass({$classid}, '{$classname}')";
         $this->getData($sql);
-        return ["status" => "success", "message" => "Flight class saved successfully."];
+        return [
+            'status' => 'success',
+            'message' => 'Flight class saved successfully.'
+        ];
     }
 
     function getflightclasses(){
@@ -14,10 +16,13 @@ class flightclasses extends db {
         return $this->getJSON($sql);
     }
 
-    function deleteflightclasses($flightclassid){
-        $sql = "CALL sp_deleteflightclasses({$flightclassid})";
+    function deleteflightclass($classid){
+        $sql = "CALL sp_deleteflightclass({$classid})";
         $this->getData($sql);
-        return ["status" => "success", "message" => "Flight class deleted successfully."];
+        return [
+            'status' => 'success',
+            'message' => 'Flight class deleted successfully.'
+        ];
     }
 }
 ?>

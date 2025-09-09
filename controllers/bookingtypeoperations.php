@@ -1,24 +1,23 @@
 <?php
-require_once '../models/bookingtype.php';
+require_once 'bookingtype.php';
 
-$bt = new bookingtype();
+$bookingtype = new bookingtype();
 
-if(isset($_POST['savebookingtype'])){
-    $typeid = $_POST['typeid'];
-    $typename = $_POST['typename'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $bookingtypeid = $_POST['bookingtypeid'] ?? 0;
+    $typename = $_POST['typename'] ?? '';
 
-    $response = $bt->savebookingtype($typeid, $typename);
-    echo json_encode($response);
+    echo json_encode($bookingtype->savebookingtype($bookingtypeid, $typename));
 }
 
-if(isset($_GET['getbookingtype'])){
-    $response = $bt->getbookingtype();
-    echo $response;
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    echo $bookingtype->getbookingtype();
 }
 
-if(isset($_POST['deletebookingtype'])){
-    $typeid = $_POST['typeid'];
-    $response = $bt->deletebookingtype($typeid);
-    echo json_encode($response);
+if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+    parse_str(file_get_contents("php://input"), $_DELETE);
+    $bookingtypeid = $_DELETE['bookingtypeid'] ?? 0;
+
+    echo json_encode($bookingtype->deletebookingtype($bookingtypeid));
 }
 ?>

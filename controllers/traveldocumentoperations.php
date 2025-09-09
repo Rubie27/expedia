@@ -1,25 +1,23 @@
 <?php
-require_once '../models/traveldocuments.php';
+require_once 'traveldoc.php';
 
-$doc = new traveldocuments();
+$traveldoc = new traveldoc();
 
-if(isset($_POST['savetraveldocument'])){
-    $documentid = $_POST['documentid'];
-    $documentname = $_POST['documentname'];
-    $documentexpires = $_POST['documentexpires'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $traveldocid   = $_POST['traveldocid'] ?? 0;
+    $docname       = $_POST['docname'] ?? '';
 
-    $response = $doc->savetraveldocument($documentid, $documentname, $documentexpires);
-    echo json_encode($response);
+    echo json_encode($traveldoc->savetraveldoc($traveldocid, $docname));
 }
 
-if(isset($_GET['gettraveldocument'])){
-    $response = $doc->gettraveldocument();
-    echo $response;
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    echo $traveldoc->gettraveldoc();
 }
 
-if(isset($_POST['deletetraveldocument'])){
-    $documentid = $_POST['documentid'];
-    $response = $doc->deletetraveldocument($documentid);
-    echo json_encode($response);
+if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+    parse_str(file_get_contents("php://input"), $_DELETE);
+    $traveldocid = $_DELETE['traveldocid'] ?? 0;
+
+    echo json_encode($traveldoc->deletetraveldoc($traveldocid));
 }
 ?>

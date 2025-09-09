@@ -1,24 +1,24 @@
 <?php
-require_once '../models/paymentmethod.php';
+require_once 'paymentmethod.php';
 
-$payment = new paymentmethod();
+$paymentmethod = new paymentmethod();
 
-if(isset($_POST['savepaymentmethod'])){
-    $methodid = $_POST['methodid'];
-    $methodname = $_POST['methodname'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $paymentmethodid   = $_POST['paymentmethodid'] ?? 0;
+    $paymentmethodname = $_POST['paymentmethodname'] ?? '';
 
-    $response = $payment->savepaymentmethod($methodid, $methodname);
-    echo json_encode($response);
+    echo json_encode($paymentmethod->savepaymentmethod($paymentmethodid, $paymentmethodname));
 }
 
-if(isset($_GET['getpaymentmethod'])){
-    $response = $payment->getpaymentmethod();
-    echo $response;
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    echo $paymentmethod->getpaymentmethod();
 }
 
-if(isset($_POST['deletepaymentmethod'])){
-    $methodid = $_POST['methodid'];
-    $response = $payment->deletepaymentmethod($methodid);
-    echo json_encode($response);
+if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+    parse_str(file_get_contents("php://input"), $_DELETE);
+    $paymentmethodid = $_DELETE['paymentmethodid'] ?? 0;
+
+    echo json_encode($paymentmethod->deletepaymentmethod($paymentmethodid));
 }
 ?>
+

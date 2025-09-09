@@ -1,24 +1,23 @@
 <?php
-require_once '../models/bookingclass.php';
+require_once 'bookingclass.php';
 
-$bc = new bookingclass();
+$bookingclass = new bookingclass();
 
-if(isset($_POST['savebookingclass'])){
-    $classid = $_POST['classid'];
-    $classname = $_POST['classname'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $bookingclassid = $_POST['bookingclassid'] ?? 0;
+    $classname = $_POST['classname'] ?? '';
 
-    $response = $bc->savebookingclass($classid, $classname);
-    echo json_encode($response);
+    echo json_encode($bookingclass->savebookingclass($bookingclassid, $classname));
 }
 
-if(isset($_GET['getbookingclass'])){
-    $response = $bc->getbookingclass();
-    echo $response;
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    echo $bookingclass->getbookingclass();
 }
 
-if(isset($_POST['deletebookingclass'])){
-    $classid = $_POST['classid'];
-    $response = $bc->deletebookingclass($classid);
-    echo json_encode($response);
+if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+    parse_str(file_get_contents("php://input"), $_DELETE);
+    $bookingclassid = $_DELETE['bookingclassid'] ?? 0;
+
+    echo json_encode($bookingclass->deletebookingclass($bookingclassid));
 }
 ?>

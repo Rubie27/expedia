@@ -2,11 +2,13 @@
 require_once 'db.php';
 
 class bookingclass extends db {
-
-    function savebookingclass($classid, $classname){
-        $sql = "CALL sp_savebookingclass({$classid}, '{$classname}')";
+    function savebookingclass($bookingclassid, $classname){
+        $sql = "CALL sp_savebookingclass({$bookingclassid}, '{$classname}')";
         $this->getData($sql);
-        return ["status" => "success", "message" => "Booking class saved successfully."];
+        return [
+            'status' => 'success',
+            'message' => 'Booking Class saved successfully.'
+        ];
     }
 
     function getbookingclass(){
@@ -14,10 +16,13 @@ class bookingclass extends db {
         return $this->getJSON($sql);
     }
 
-    function deletebookingclass($classid){
-        $sql = "CALL sp_deletebookingclass({$classid})";
+    function deletebookingclass($bookingclassid){
+        $sql = "CALL sp_deletebookingclass({$bookingclassid})";
         $this->getData($sql);
-        return ["status" => "success", "message" => "Booking class deleted successfully."];
+        return [
+            'status' => 'success',
+            'message' => 'Booking Class deleted successfully.'
+        ];
     }
 }
 ?>

@@ -1,30 +1,24 @@
 <?php
-require_once '../models/flightbookingpassenger.php';
+require_once 'flightbookingpassenger.php';
 
-$fbp = new flightbookingpassenger();
+$flightbookingpassenger = new flightbookingpassenger();
 
-if(isset($_POST['saveflightbookingpassenger'])){
-    $passengerid = $_POST['passengerid'];
-    $bookingclassid = $_POST['bookingclassid'];
-    $documentid = $_POST['documentid'];
-    $firstname = $_POST['firstname'];
-    $secondname = $_POST['secondname'];
-    $surname = $_POST['surname'];
-    $gender = $_POST['gender'];
-    $dob = $_POST['dob'];
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $fbpid       = $_POST['fbpid'] ?? 0;
+    $bookingid   = $_POST['bookingid'] ?? 0;
+    $passengerid = $_POST['passengerid'] ?? 0;
 
-    $response = $fbp->saveflightbookingpassenger($passengerid, $bookingclassid, $documentid, $firstname, $secondname, $surname, $gender, $dob);
-    echo json_encode($response);
+    echo json_encode($flightbookingpassenger->saveflightbookingpassenger($fbpid, $bookingid, $passengerid));
 }
 
-if(isset($_GET['getflightbookingpassenger'])){
-    $response = $fbp->getflightbookingpassenger();
-    echo $response;
+if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+    echo $flightbookingpassenger->getflightbookingpassenger();
 }
 
-if(isset($_POST['deleteflightbookingpassenger'])){
-    $passengerid = $_POST['passengerid'];
-    $response = $fbp->deleteflightbookingpassenger($passengerid);
-    echo json_encode($response);
+if ($_SERVER['REQUEST_METHOD'] == 'DELETE') {
+    parse_str(file_get_contents("php://input"), $_DELETE);
+    $fbpid = $_DELETE['fbpid'] ?? 0;
+
+    echo json_encode($flightbookingpassenger->deleteflightbookingpassenger($fbpid));
 }
 ?>
