@@ -95,21 +95,27 @@ CREATE TABLE `country` (
   `countryid` int(11) NOT NULL AUTO_INCREMENT,
   `countryname` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`countryid`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `country` */
 
 insert  into `country`(`countryid`,`countryname`) values 
-(1,'kenya'),
+(1,'Republic of Kenya'),
 (2,'Uganda'),
 (4,'Eritrea'),
 (5,'Burundi'),
 (6,'Tanzania'),
+(7,'Tanzania'),
+(8,'Tanzania'),
+(9,'Tanzania'),
 (10,'SouthAfrica'),
+(11,'Burundi'),
+(12,'Eritrea'),
+(13,'Eritrea'),
+(14,'Tanzania'),
 (15,'Ethiopia'),
 (16,'	Korea'),
-(17,'Jamaica'),
-(18,'USA');
+(17,'Jamaica');
 
 /*Table structure for table `currency` */
 
@@ -253,27 +259,6 @@ CREATE TABLE `traveldocuments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `traveldocuments` */
-
-/* Procedure structure for procedure `sp_checkairport` */
-
-/*!50003 DROP PROCEDURE IF EXISTS  `sp_checkairport` */;
-
-DELIMITER $$
-
-/*!50003 CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_checkairport`(
-    IN airportid INT,
-    IN airportname VARCHAR(100),
-    IN cityidnew INT
-)
-BEGIN
-    SELECT *
-        
-    FROM `airport`
-    WHERE `airportid` = airportid
-      AND `airportname` = $airportname
-      AND `cityid` <> $cityid;
-END */$$
-DELIMITER ;
 
 /* Procedure structure for procedure `sp_checkcountry` */
 
